@@ -32,6 +32,6 @@
     $ yarn test
     ```
 
-Create one container and run two hardhat node while testing.3
+Create one container and run two hardhat node while testing.
 
 One is source chain and other is forked chain. The test running on host and interact with forked chain.
