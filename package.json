@@ -1,0 +1,37 @@
+{
+  "name": "debug-helper",
+  "version": "1.0.0",
+  "description": "Debug tool for zkopru with hardhat",
+  "main": "index.js",
+  "repository": "https://github.com/zkopru-network/debug-helper",
+  "author": "jin <sifnoc09@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "postinstall": "link-module-alias",
+    "build": "yarn build:image",
+    "build:image": "docker build -f dockerfiles/hardhat.dockerfile -t zkopru-debug/hardhat .",
+    "test": "jest controller"
+  },
+  "dependencies": {
+    "@types/bn.js": "^5.1.0",
+    "bn.js": "5.2",
+    "dockerode": "^3.3.1",
+    "hardhat": "^2.8.3",
+    "soltypes": "1.3.5"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-web3": "^2.0.0",
+    "@types/dockerode": "^3.3.3",
+    "@types/jest": "^27.4.0",
+    "jest": "^27.5.1",
+    "link-module-alias": "^1.2.0",
+    "shx": "^0.3.4",
+    "ts-jest": "^27.1.3",
+    "ts-node": "^10.5.0",
+    "typescript": "^4.5.5",
+    "web3": "1.2.11"
+  },
+  "_moduleAliases": {
+    "~zkopru": "./zkopru/packages"
+  }
+}
