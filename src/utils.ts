@@ -1,4 +1,9 @@
+import { FullNode } from '~zkopru/core'
+import { DB, schema } from '~zkopru/database'
+import { ConnectionInfo } from '@ethersproject/web'
+import { JsonRpcProvider } from '@ethersproject/providers'
 import Docker, { Container } from 'dockerode'
+import { SQLiteConnector } from '~zkopru/database/dist/node'
 
 const ImageName = process.env.DOCKER_IMAGE_NAME ?? 'zkopru-debug/hardhat'
 const ImageTag = process.env.DOCKER_IMAGE_TAG ?? 'latest'
@@ -62,4 +67,28 @@ export async function runForkedChain(url?: string, blockNumber?: number, chainId
   })
 
   return hardhatContainer
+}
+
+export async function createFullNode(nodeUrl: string, zkopruAddress: string, outputFile?: string) {
+  const connectionInfo: ConnectionInfo = {
+    url: nodeUrl,
+    timeout: 300000
+  }
+  const provider = new JsonRpcProvider(connectionInfo)
+
+  async function waitConnection() {
+    return new Promise<void>(async res => {
+      if (await provider.ready) res()
+      provider.on('connect', res)
+    })
+  }
+
+  await waitConnection()
+
+  const db: DB = await SQLiteConnector.create(schema, `${outputFile ?? ":memory:"}`)
+  return FullNode.new({
+    address: zkopruAddress,
+    provider,
+    db
+  })
 }
