@@ -14,13 +14,14 @@ if (url !== '') {
         blockNumber: blockNumber == 0 ? undefined : blockNumber
       },
       chainId,
+      loggingEnabled: true,
     }
   }
 }
 
 const config: HardhatUserConfig = {
   solidity: "0.7.4",
-  networks: { ...network }
+  networks: { ...network },
 }
 
 module.exports = config

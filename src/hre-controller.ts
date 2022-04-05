@@ -1,4 +1,3 @@
-// import hre from 'hardhat'
 import { HttpNetworkConfig, EthereumProvider } from 'hardhat/types'
 import { createProvider } from 'hardhat/internal/core/providers/construction'
 import { rpcBlock } from 'hardhat/internal/core/jsonrpc/types/output/block'
