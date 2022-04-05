@@ -69,7 +69,7 @@ export async function runForkedChain(url?: string, blockNumber?: number, chainId
   return hardhatContainer
 }
 
-export async function createFullNode(nodeUrl: string, zkopruAddress: string, outputFile?: string) {
+export async function createFullNode(nodeUrl: string, zkopruAddress: string, blockNumber?: string | 'latest') {
   const connectionInfo: ConnectionInfo = {
     url: nodeUrl,
     timeout: 300000
@@ -85,7 +85,17 @@ export async function createFullNode(nodeUrl: string, zkopruAddress: string, out
 
   await waitConnection()
 
-  const db: DB = await SQLiteConnector.create(schema, `${outputFile ?? ":memory:"}`)
+  // configure database
+  let outputFile: string = ":memory:"
+  if (blockNumber) {
+    outputFile = `database-${blockNumber}.sqlite`
+  }
+  if (blockNumber == 'latest') {
+    const latestBlockNumber = await provider.getBlockNumber()
+    outputFile = `database-${latestBlockNumber}.sqlite`
+  }
+
+  const db: DB = await SQLiteConnector.create(schema, outputFile)
   return FullNode.new({
     address: zkopruAddress,
     provider,

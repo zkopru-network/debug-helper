@@ -6,5 +6,8 @@ node_modules/
 cache/
 artifcats/
 
+# Zkopru database
+*.sqlite
+
 .build-cache
 .vscode/*
